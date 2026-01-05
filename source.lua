@@ -10,7 +10,7 @@ local Players = cloneref(game:GetService("Players"))
 local LocalPlayer = Players.LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 
-local Library = {}
+
 
 -- [UTILITY]
 local function Tween(obj, time, properties)
@@ -246,3 +246,4 @@ function Library:CreateWindow(Config)
     end
     return WF
 end
+return Library
