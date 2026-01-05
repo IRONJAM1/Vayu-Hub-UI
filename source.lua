@@ -1,4 +1,4 @@
--- [[ 🍃 VAYU HUB: UI LIBRARY V13 (MAC STYLE & FIXES) ]] --
+-- [[ 🍃 VAYU HUB: UI LIBRARY V13 (SOURCE ONLY) ]] --
 
 local cloneref = cloneref or function(o) return o end
 local UserInputService = cloneref(game:GetService("UserInputService"))
@@ -26,20 +26,15 @@ function Library:CreateWindow(Config)
     
     -- [1] GUI SETUP
     local ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Name = "VayuHub_V13"
-    if CoreGui:FindFirstChild("VayuHub_V13") then CoreGui.VayuHub_V13:Destroy() end
+    ScreenGui.Name = "VayuHub_Lib"
+    if CoreGui:FindFirstChild("VayuHub_Lib") then CoreGui.VayuHub_Lib:Destroy() end
     ScreenGui.Parent = CoreGui
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     
-    -- [FIX] Blur Logic (Named specifically to find later)
     local Blur
     if UseBlur then
-        -- ลบตัวเก่าก่อนถ้ามีค้าง
-        if Lighting:FindFirstChild("VayuBlur_V13") then Lighting.VayuBlur_V13:Destroy() end
-        Blur = Instance.new("BlurEffect")
-        Blur.Name = "VayuBlur_V13"
-        Blur.Size = 0
-        Blur.Parent = Lighting
+        if Lighting:FindFirstChild("VayuBlur_Lib") then Lighting.VayuBlur_Lib:Destroy() end
+        Blur = Instance.new("BlurEffect"); Blur.Name = "VayuBlur_Lib"; Blur.Size = 0; Blur.Parent = Lighting
     end
 
     local NotifyContainer = Instance.new("Frame"); NotifyContainer.Name = "NotifyContainer"; NotifyContainer.Size = UDim2.new(0, 300, 1, 0); NotifyContainer.Position = UDim2.new(1, -320, 0, 0); NotifyContainer.BackgroundTransparency = 1; NotifyContainer.Parent = ScreenGui
@@ -60,94 +55,28 @@ function Library:CreateWindow(Config)
     local TitleLabel = Instance.new("TextLabel"); TitleLabel.Text = Title; TitleLabel.Font = Enum.Font.GothamBold; TitleLabel.TextSize = 16; TitleLabel.TextColor3 = Color3.fromRGB(240, 240, 240); TitleLabel.Size = UDim2.new(1, -20, 1, 0); TitleLabel.Position = UDim2.new(0, LogoId ~= "" and 50 or 20, 0, 0); TitleLabel.BackgroundTransparency = 1; TitleLabel.TextXAlignment = Enum.TextXAlignment.Left; TitleLabel.Parent = TopBar
     if LogoId ~= "" then local LogoImg = Instance.new("ImageLabel"); LogoImg.Size = UDim2.fromOffset(30, 30); LogoImg.Position = UDim2.new(0, 10, 0.5, -15); LogoImg.BackgroundTransparency = 1; LogoImg.Image = "rbxassetid://" .. LogoId:gsub("rbxassetid://", ""); LogoImg.Parent = TopBar end
 
-    -- [FIX] Resize Handle (Clean Icon)
-    local ResizeHandle = Instance.new("ImageButton")
-    ResizeHandle.Size = UDim2.fromOffset(16, 16)
-    ResizeHandle.Position = UDim2.new(1, -16, 1, -16)
-    ResizeHandle.BackgroundTransparency = 1
-    ResizeHandle.Image = "rbxassetid://7218676876" -- Standard Resize Grip Icon
-    ResizeHandle.ImageColor3 = Color3.fromRGB(120, 120, 120)
-    ResizeHandle.ImageTransparency = 0.5
-    ResizeHandle.ZIndex = 10
-    ResizeHandle.Parent = MainFrame
+    local ResizeHandle = Instance.new("ImageButton"); ResizeHandle.Size = UDim2.fromOffset(16, 16); ResizeHandle.Position = UDim2.new(1, -16, 1, -16); ResizeHandle.BackgroundTransparency = 1; ResizeHandle.Image = "rbxassetid://7218676876"; ResizeHandle.ImageColor3 = Color3.fromRGB(120, 120, 120); ResizeHandle.ImageTransparency = 0.5; ResizeHandle.ZIndex = 10; ResizeHandle.Parent = MainFrame
 
-    -- [NEW] MAC STYLE CONTROLS
-    local ControlContainer = Instance.new("Frame")
-    ControlContainer.Size = UDim2.new(0, 80, 1, 0)
-    ControlContainer.Position = UDim2.new(1, -15, 0, 0)
-    ControlContainer.AnchorPoint = Vector2.new(1, 0)
-    ControlContainer.BackgroundTransparency = 1
-    ControlContainer.Parent = TopBar
-    
-    local ControlLayout = Instance.new("UIListLayout")
-    ControlLayout.FillDirection = Enum.FillDirection.Horizontal
-    ControlLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
-    ControlLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-    ControlLayout.Padding = UDim.new(0, 8) -- Mac buttons are close together
-    ControlLayout.Parent = ControlContainer
+    local ControlContainer = Instance.new("Frame"); ControlContainer.Size = UDim2.new(0, 80, 1, 0); ControlContainer.Position = UDim2.new(1, -15, 0, 0); ControlContainer.AnchorPoint = Vector2.new(1, 0); ControlContainer.BackgroundTransparency = 1; ControlContainer.Parent = TopBar
+    local ControlLayout = Instance.new("UIListLayout"); ControlLayout.FillDirection = Enum.FillDirection.Horizontal; ControlLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right; ControlLayout.VerticalAlignment = Enum.VerticalAlignment.Center; ControlLayout.Padding = UDim.new(0, 8); ControlLayout.Parent = ControlContainer
 
     local function ToggleUI() MainFrame.Visible = not MainFrame.Visible; if Blur then Tween(Blur, 0.5, {Size = MainFrame.Visible and 15 or 0}):Play() end end
 
     local function CreateMacBtn(Color, HoverIcon, Callback)
-        local Btn = Instance.new("ImageButton")
-        Btn.Size = UDim2.fromOffset(14, 14) -- Mac standard size
-        Btn.BackgroundColor3 = Color
-        Btn.Image = "" -- No image by default
-        Btn.AutoButtonColor = false
-        Btn.Parent = ControlContainer
-        
-        local Corner = Instance.new("UICorner"); Corner.CornerRadius = UDim.new(1, 0); Corner.Parent = Btn -- Perfectly Round
-        
-        -- Hover Icon (Shows only on mouse enter)
-        local Icon = Instance.new("ImageLabel")
-        Icon.Size = UDim2.fromOffset(10, 10)
-        Icon.AnchorPoint = Vector2.new(0.5, 0.5)
-        Icon.Position = UDim2.new(0.5, 0, 0.5, 0)
-        Icon.BackgroundTransparency = 1
-        Icon.Image = HoverIcon
-        Icon.ImageColor3 = Color3.new(0,0,0)
-        Icon.ImageTransparency = 1 -- Hidden by default
-        Icon.Parent = Btn
-        
+        local Btn = Instance.new("ImageButton"); Btn.Size = UDim2.fromOffset(14, 14); Btn.BackgroundColor3 = Color; Btn.Image = ""; Btn.AutoButtonColor = false; Btn.Parent = ControlContainer
+        local Corner = Instance.new("UICorner"); Corner.CornerRadius = UDim.new(1, 0); Corner.Parent = Btn
+        local Icon = Instance.new("ImageLabel"); Icon.Size = UDim2.fromOffset(10, 10); Icon.AnchorPoint = Vector2.new(0.5, 0.5); Icon.Position = UDim2.new(0.5, 0, 0.5, 0); Icon.BackgroundTransparency = 1; Icon.Image = HoverIcon; Icon.ImageColor3 = Color3.new(0,0,0); Icon.ImageTransparency = 1; Icon.Parent = Btn
         Btn.MouseEnter:Connect(function() Tween(Icon, 0.2, {ImageTransparency = 0.5}):Play(); Tween(Btn, 0.2, {ImageTransparency = 0.1}):Play() end)
         Btn.MouseLeave:Connect(function() Tween(Icon, 0.2, {ImageTransparency = 1}):Play(); Tween(Btn, 0.2, {ImageTransparency = 0}):Play() end)
         Btn.MouseButton1Click:Connect(Callback)
     end
 
-    -- 1. Minimize (Yellow -)
-    CreateMacBtn(Color3.fromRGB(255, 189, 46), "rbxassetid://10747384394", function()
-        ToggleUI()
-    end)
+    CreateMacBtn(Color3.fromRGB(255, 189, 46), "rbxassetid://10747384394", function() ToggleUI() end)
+    local IsMaximized = false; local OldSize = UDim2.fromOffset(600, 450); local OldPos = UDim2.fromScale(0.5, 0.5)
+    CreateMacBtn(Color3.fromRGB(39, 201, 63), "rbxassetid://10747384534", function() IsMaximized = not IsMaximized; if IsMaximized then OldSize = MainFrame.Size; OldPos = MainFrame.Position; Tween(MainFrame, 0.4, {Size = UDim2.new(1, -20, 1, -20), Position = UDim2.new(0.5, 0, 0.5, 0)}):Play() else Tween(MainFrame, 0.4, {Size = OldSize, Position = OldPos}):Play() end end)
+    CreateMacBtn(Color3.fromRGB(255, 95, 86), "rbxassetid://10747384394", function() ScreenGui:Destroy(); if Blur then Blur:Destroy() end end)
 
-    -- 2. Maximize (Green +)
-    local IsMaximized = false
-    local OldSize = UDim2.fromOffset(600, 450)
-    local OldPos = UDim2.fromScale(0.5, 0.5)
-    
-    CreateMacBtn(Color3.fromRGB(39, 201, 63), "rbxassetid://10747384534", function()
-        IsMaximized = not IsMaximized
-        if IsMaximized then
-            OldSize = MainFrame.Size; OldPos = MainFrame.Position
-            Tween(MainFrame, 0.4, {Size = UDim2.new(1, -20, 1, -20), Position = UDim2.new(0.5, 0, 0.5, 0)}):Play()
-        else
-            Tween(MainFrame, 0.4, {Size = OldSize, Position = OldPos}):Play()
-        end
-    end)
-
-    -- 3. Close (Red x) - [FIXED BLUR REMOVAL]
-    CreateMacBtn(Color3.fromRGB(255, 95, 86), "rbxassetid://10747384394", function()
-        -- Destroy GUI
-        ScreenGui:Destroy()
-        -- [FIX] Destroy Blur explicitly
-        if Blur then Blur:Destroy() end
-        local checkBlur = Lighting:FindFirstChild("VayuBlur_V13")
-        if checkBlur then checkBlur:Destroy() end
-    end)
-
-    -- [2] LOGIC
-    local Dragging, DragInput, DragStart, StartPos
-    local Resizing, ResizeStart, StartSize
-    
+    local Dragging, DragInput, DragStart, StartPos; local Resizing, ResizeStart, StartSize
     TopBar.InputBegan:Connect(function(i) if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then Dragging = true; DragStart = i.Position; StartPos = MainFrame.Position end end)
     ResizeHandle.InputBegan:Connect(function(i) if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then Resizing = true; ResizeStart = i.Position; StartSize = MainFrame.Size end end)
     UserInputService.InputChanged:Connect(function(i) if i.UserInputType == Enum.UserInputType.MouseMovement or i.UserInputType == Enum.UserInputType.Touch then DragInput = i end end)
@@ -156,7 +85,6 @@ function Library:CreateWindow(Config)
     
     UserInputService.InputBegan:Connect(function(i, gp) if not gp and i.KeyCode == ToggleKey then ToggleUI() end end)
     
-    -- [TOGGLE BUTTON]
     do
         local MBtn = Instance.new("ImageButton"); MBtn.Size = UDim2.fromOffset(50, 50); MBtn.Position = UDim2.new(0, 50, 0.5, -25); MBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 35); MBtn.Image = LogoId ~= "" and "rbxassetid://" .. LogoId:gsub("rbxassetid://", "") or "rbxassetid://13466556465"; MBtn.Parent = ScreenGui
         Instance.new("UICorner", MBtn).CornerRadius = UDim.new(1, 0); local MStroke = Instance.new("UIStroke"); MStroke.Color = ThemeColor; MStroke.Thickness = 2; MStroke.Parent = MBtn
@@ -169,13 +97,11 @@ function Library:CreateWindow(Config)
     if Blur then Tween(Blur, 0.8, {Size = 15}):Play() end
     MainFrame.Size = UDim2.fromOffset(0, 0); Tween(MainFrame, 0.6, {Size = UDim2.fromOffset(600, 450)}):Play()
 
-    -- [3] CONTAINERS
     local TabContainer = Instance.new("ScrollingFrame"); TabContainer.Size = UDim2.new(0, 160, 1, -50); TabContainer.Position = UDim2.new(0, 10, 0, 50); TabContainer.BackgroundTransparency = 1; TabContainer.ScrollBarThickness = 0; TabContainer.Parent = MainFrame
     local TabList = Instance.new("UIListLayout"); TabList.Padding = UDim.new(0, 6); TabList.SortOrder = Enum.SortOrder.LayoutOrder; TabList.Parent = TabContainer
     local PageContainer = Instance.new("Frame"); PageContainer.Size = UDim2.new(1, -180, 1, -60); PageContainer.Position = UDim2.new(0, 175, 0, 55); PageContainer.BackgroundTransparency = 1; PageContainer.Parent = MainFrame
     local Divider = Instance.new("Frame"); Divider.Size = UDim2.new(0, 1, 1, -70); Divider.Position = UDim2.new(0, 170, 0, 60); Divider.BackgroundColor3 = Color3.fromRGB(45, 45, 50); Divider.BorderSizePixel = 0; Divider.Parent = MainFrame
 
-    -- [4] FUNCTIONS
     local WF = {}
 
     function WF:Notify(P)
@@ -220,7 +146,6 @@ function Library:CreateWindow(Config)
         TB.MouseButton1Click:Connect(Activate); if FirstTab then FirstTab = false; Activate() end
 
         local TF = {}
-        -- [COMPLETE ELEMENTS] --
         function TF:CreateLabel(T) local L = Instance.new("TextLabel"); L.Text = T; L.Font = Enum.Font.GothamBold; L.TextSize = 13; L.TextColor3 = Color3.fromRGB(180, 180, 180); L.Size = UDim2.new(1, 0, 0, 30); L.BackgroundTransparency = 1; L.TextXAlignment = Enum.TextXAlignment.Left; L.Parent = P end
         function TF:CreateSection(T) local F = Instance.new("Frame"); F.BackgroundTransparency = 1; F.Size = UDim2.new(1, 0, 0, 35); F.Parent = P; local L = Instance.new("TextLabel"); L.Text = "  " .. string.upper(T); L.Font = Enum.Font.GothamBlack; L.TextSize = 12; L.TextColor3 = Color3.fromRGB(100, 100, 110); L.Size = UDim2.new(1, 0, 1, 0); L.BackgroundTransparency = 1; L.TextXAlignment = Enum.TextXAlignment.Left; L.Parent = F end
         function TF:CreateParagraph(T, C) local F = Instance.new("Frame"); F.BackgroundColor3 = Color3.fromRGB(25, 25, 30); F.Size = UDim2.new(1, 0, 0, 60); F.Parent = P; Instance.new("UICorner", F).CornerRadius = UDim.new(0, 8); local TL = Instance.new("TextLabel"); TL.Text = T; TL.Font = Enum.Font.GothamBold; TL.TextSize = 14; TL.TextColor3 = ThemeColor; TL.Size = UDim2.new(1, -20, 0, 20); TL.Position = UDim2.new(0, 10, 0, 8); TL.BackgroundTransparency = 1; TL.TextXAlignment = Enum.TextXAlignment.Left; TL.Parent = F; local CL = Instance.new("TextLabel"); CL.Text = C; CL.Font = Enum.Font.GothamMedium; CL.TextSize = 12; CL.TextColor3 = Color3.fromRGB(200, 200, 200); CL.Size = UDim2.new(1, -20, 0, 30); CL.Position = UDim2.new(0, 10, 0, 28); CL.BackgroundTransparency = 1; CL.TextXAlignment = Enum.TextXAlignment.Left; CL.TextWrapped = true; CL.Parent = F end
@@ -247,3 +172,4 @@ function Library:CreateWindow(Config)
     return WF
 end
 
+return Library
