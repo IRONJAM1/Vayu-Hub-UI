@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vayu Hub UI - Documentation</title>
+    <style>
+        :root {
+            --primary: #0091ff;
+            --primary-hover: #007acc;
+            --bg: #0f0f11;
+            --sidebar: #18181b;
+            --text: #ffffff;
+            --text-dim: #a1a1aa;
+            --code-bg: #27272a;
+            --border: #333;
+        }
+        
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar);
+            padding: 20px;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 1px;
+        }
+
+        .nav-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            color: var(--text-dim);
+            transition: 0.2s;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 5px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: rgba(0, 145, 255, 0.1);
+            color: var(--primary);
+        }
+
+        /* Content */
+        .content {
+            flex: 1;
+            padding: 40px 60px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        section {
+            margin-bottom: 60px;
+            scroll-margin-top: 20px;
+        }
+
+        h1 { font-size: 32px; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-top: 0; }
+        h2 { font-size: 24px; margin-top: 30px; color: var(--primary); }
+        h3 { font-size: 18px; margin-top: 20px; color: var(--text); }
+        p { color: var(--text-dim); line-height: 1.6; margin-bottom: 15px; }
+        ul { color: var(--text-dim); line-height: 1.6; padding-left: 20px; }
+        li { margin-bottom: 8px; }
+
+        /* Code Block */
+        .code-block {
+            background-color: var(--code-bg);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            margin: 15px 0;
+            position: relative;
+            white-space: pre;
+        }
+
+        .keyword { color: #cc78fa; }
+        .string { color: #98c379; }
+        .function { color: #61afef; }
+        .comment { color: #5c6370; font-style: italic; }
+        .number { color: #d19a66; }
+        .bool { color: #d19a66; }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 16px;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; height: auto; overflow: visible; }
+            .sidebar { width: 100%; height: auto; }
+            .content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo">🍃 VAYU HUB</div>
+        <a href="#intro" class="nav-item">Introduction</a>
+        <a href="#install" class="nav-item">Installation</a>
+        <a href="#window" class="nav-item">Creating Window</a>
+        <a href="#elements" class="nav-item">Elements</a>
+        <a href="#advanced" class="nav-item">Advanced</a>
+    </div>
+
+    <div class="content">
+        <section id="intro">
+            <h1>Introduction</h1>
+            <p>Vayu Hub V13 is a next-generation UI Library for Roblox, designed to provide a premium experience on both Desktop and Mobile devices. With Mac-style controls, smooth animations, and optimized performance, it's the best choice for your script.</p>
+            <a href="https://github.com/IRONJAM1/Vayu-Hub-UI" target="_blank" class="btn">View on GitHub</a>
+        </section>
+
+        <section id="install">
+            <h2>⚡ Installation</h2>
+            <p>To use Vayu Hub, simply paste the following loadstring into your script execution box:</p>
+            
+            <div class="code-block"><span class="keyword">local</span> Library = <span class="function">loadstring</span>(game:<span class="function">HttpGet</span>(<span class="string">"https://raw.githubusercontent.com/IRONJAM1/Vayu-Hub-UI/refs/heads/main/source.lua"</span>))()</div>
+        </section>
+
+        <section id="window">
+            <h2>🪟 Creating a Window</h2>
+            <p>Initialize the library by creating a main window.</p>
+            
+            <div class="code-block"><span class="keyword">local</span> Window = Library:<span class="function">CreateWindow</span>({
+    Title = <span class="string">"My Script Name"</span>,
+    ThemeColor = Color3.<span class="function">fromRGB</span>(<span class="number">0</span>, <span class="number">145</span>, <span class="number">255</span>),
+    Logo = <span class="string">"90392555143990"</span>, <span class="comment">-- Optional</span>
+    UseBlur = <span class="bool">true</span>
+})</div>
+        </section>
+
+        <section id="elements">
+            <h2>🧩 Adding Elements</h2>
+            <p>Learn how to add tabs, buttons, toggles, and more.</p>
+
+            <h3>Create Tab</h3>
+            <div class="code-block"><span class="keyword">local</span> MainTab = Window:<span class="function">CreateTab</span>(<span class="string">"Main"</span>, <span class="string">"6034509993"</span>)</div>
+
+            <h3>Create Toggle</h3>
+            <div class="code-block">MainTab:<span class="function">CreateToggle</span>(<span class="string">"Auto Farm"</span>, <span class="bool">false</span>, <span class="keyword">function</span>(Value)
+    <span class="function">print</span>(<span class="string">"Auto Farm:"</span>, Value)
+<span class="keyword">end</span>)</div>
+
+            <h3>Create Slider</h3>
+            <div class="code-block">MainTab:<span class="function">CreateSlider</span>(<span class="string">"WalkSpeed"</span>, <span class="number">16</span>, <span class="number">500</span>, <span class="number">16</span>, <span class="keyword">function</span>(Value)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+<span class="keyword">end</span>)</div>
+        </section>
+
+        <section id="advanced">
+            <h2>🔥 Advanced Features</h2>
+            <ul>
+                <li><strong>Mac Style Controls:</strong> Clean minimize, maximize, and close buttons.</li>
+                <li><strong>Mobile Friendly:</strong> Draggable toggle button for touch screens.</li>
+                <li><strong>Optimized:</strong> Zero lag with `cloneref` and optimized rendering.</li>
+            </ul>
+        </section>
+
+        <p style="margin-top: 50px; border-top: 1px solid #333; padding-top: 20px;">
+            &copy; 2024 Vayu Hub UI. Open Source on GitHub.
+        </p>
+    </div>
+
+    <script>
+        // Simple script to handle active state on scroll
+        const sections = document.querySelectorAll("section");
+        const navLi = document.querySelectorAll(".nav-item");
+
+        window.addEventListener("scroll", () => {
+            let current = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 60) {
+                    current = section.getAttribute("id");
+                }
+            });
+
+            navLi.forEach((li) => {
+                li.classList.remove("active");
+                if (li.getAttribute("href").includes(current)) {
+                    li.classList.add("active");
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
