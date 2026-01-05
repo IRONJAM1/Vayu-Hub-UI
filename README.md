@@ -24,7 +24,7 @@ The Ultimate UI Library for Roblox Scripts. Inspired by WindUI/Orion but optimiz
 Copy and paste this code at the top of your script:
 
 ```lua
-local Library = loadstring(game:HttpGet("[https://raw.githubusercontent.com/IRONJAM1/Vayu-Hub-UI/refs/heads/main/source.lua](https://raw.githubusercontent.com/IRONJAM1/Vayu-Hub-UI/refs/heads/main/source.lua)"))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/IRONJAM1/Vayu-Hub-UI/refs/heads/main/source.lua"))()
 ```
 
 📖 Documentation & Examples
